@@ -62,10 +62,12 @@ class Bot:
                         origin = item.split('Ponto Origem')[1]
                     elif item.find('Ponto Destino') != -1:
                         dest = item.split('Ponto Destino')[1]
+                    elif item.find('Status') != -1:
+                        status = item.split('Status')[1]
                     else:   
                         ...
                     
-                rowDict = {"date": date,"origin": origin, "dest": dest}
+                rowDict = {"date": date,"origin": origin, "dest": dest, "status": status}
                 parsedData.append(rowDict)
         
         logging.warning(f'Table parsed: {parsedData}')
@@ -81,6 +83,7 @@ class Bot:
             Data: {lastStatus['date']}
             Origem: {lastStatus['origin']}
             Dest: {lastStatus['dest']}
+            Status: {lastStatus['status']}
         """
 
         msg = {"chat_id": chatID, "text": txt, "disable_notification": False}
@@ -102,7 +105,7 @@ class Bot:
 
         data = self.parseData()
         
-        if len(data["status"]) != len(status["status"]):
+        if data["status"] != status["status"]:
             self.sendMessage(lastStatus=data["status"][-1], chatID=chatID)
         
         try:
